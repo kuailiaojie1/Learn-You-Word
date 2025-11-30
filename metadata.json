@@ -1,0 +1,7 @@
+{
+  "name": "Learn Your Word",
+  "description": "A playful, local-first vocabulary battle and learning app powered by Gemini AI.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

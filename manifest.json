@@ -1,0 +1,24 @@
+{
+  "name": "Learn Your Word: AI Vocabulary Battle",
+  "short_name": "LearnWord",
+  "description": "A playful, local-first vocabulary battle and learning app powered by Gemini AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4f46e5",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3403/3403561.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3403/3403561.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

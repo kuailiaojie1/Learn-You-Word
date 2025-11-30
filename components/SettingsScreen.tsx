@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { db } from '../services/db';
-import { Save, Database, Trash2, Download, Upload } from 'lucide-react';
+import { Save, Database, Trash2, Download, Upload, Smartphone } from 'lucide-react';
 
 export const SettingsScreen: React.FC = () => {
   const [apiKey, setApiKey] = useState('');
   const [endpoint, setEndpoint] = useState('');
   const [status, setStatus] = useState('');
+  const [installable, setInstallable] = useState(false);
 
   useEffect(() => {
     db.settings.toArray().then(settings => {
@@ -15,6 +16,15 @@ export const SettingsScreen: React.FC = () => {
         setEndpoint(settings[0].apiEndpoint || '');
       }
     });
+
+    // Check if PWA install is possible
+    if (window.deferredPrompt) {
+      setInstallable(true);
+    }
+    
+    const handler = () => setInstallable(true);
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const saveSettings = async () => {
@@ -78,12 +88,38 @@ export const SettingsScreen: React.FC = () => {
       }
   }
 
+  const installPWA = async () => {
+    const promptEvent = window.deferredPrompt;
+    if (!promptEvent) return;
+    promptEvent.prompt();
+    const { outcome } = await promptEvent.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+    window.deferredPrompt = null;
+    setInstallable(false);
+  };
+
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-fade-in-up py-10 pb-40">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-black text-slate-800">设置中心</h2>
         <p className="text-slate-500">个性化你的 AI 体验与数据管理</p>
       </div>
+
+      {installable && (
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 rounded-3xl shadow-lg text-white flex items-center justify-between">
+            <div>
+                <h3 className="text-xl font-bold mb-1">安装应用</h3>
+                <p className="text-white/80 text-sm">将应用安装到桌面，体验更佳！</p>
+            </div>
+            <button 
+                onClick={installPWA}
+                className="px-6 py-3 bg-white text-indigo-600 font-bold rounded-full shadow-md hover:bg-slate-50 transition flex items-center gap-2"
+            >
+                <Smartphone size={20} />
+                立即安装
+            </button>
+        </div>
+      )}
 
       <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
         <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">

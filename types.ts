@@ -60,10 +60,11 @@ export enum GameMode {
   SETTINGS = 'SETTINGS'
 }
 
-// Extend Window to support global XLSX
+// Extend Window to support global XLSX and PWA prompt
 declare global {
   interface Window {
     XLSX: any;
     webkitAudioContext: typeof AudioContext;
+    deferredPrompt: any; // PWA Install Prompt Event
   }
 }
